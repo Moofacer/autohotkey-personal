@@ -4,22 +4,10 @@ SendMode Input
 SetWorkingDir %A_ScriptDir%  ; Ensures a consistent starting directory.
 Menu, middleMenu, Add, (no action), menuHandler
 Menu, middleMenu, Disable, (no action)
-SetTimer,UPDATEDSCRIPT,5000
 return
 
 menuHandler:
 return
-
-UPDATEDSCRIPT:
-FileGetAttrib,attribs,%A_ScriptFullPath%
-IfInString,attribs,A
-{
-FileSetAttrib,-A,%A_ScriptFullPath%
-SplashTextOn,,,Updating script...,
-Sleep,500
-Reload
-}
-Return
 
 #Del::
 if NumLockToggle = 0
