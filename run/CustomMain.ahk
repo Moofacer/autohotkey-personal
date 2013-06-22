@@ -1,12 +1,13 @@
 #NoEnv
 #SingleInstance force
 #NoTrayIcon
+ListLines Off
 SendMode Input
 SetWorkingDir %A_ScriptDir%  ; Ensures a consistent starting directory.
 Return
 
 ; Hotkeys mapped to Win+Space -> Combination.
-#Space::
+#Space::Return
 Suspend Off
 SplashTextOn,,,Inputting hotkey...,
 Input,custom,L1 T0.5,{Esc}{Enter}
@@ -21,7 +22,7 @@ if (custom2 == "") {
 }
 custom .= custom2
 if (custom == " " or custom == "  ")
-        GoSub #Space
+    GoSub #Space
 if (custom == "mp") {
 	MouseGetPos xPos,yPos
 	clipboard = %xPos%,%yPos%
