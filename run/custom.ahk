@@ -4,10 +4,66 @@
 ListLines Off
 SendMode Input
 SetWorkingDir %A_ScriptDir%  ; Ensures a consistent starting directory.
+
+SplitPath, A_ScriptName,,,,scriptName
+sendCount := 0
+Loop
+{
+    IniRead, sendKey%A_Index%, %scriptName%.ini, send, key%A_Index%, %A_Space%
+    IniRead, sendValue%A_Index%, %scriptName%.ini, send, value%A_Index%, %A_Space%
+    If (sendKey%A_Index% == "" And sendValue%A_Value% == "")
+    {
+        Break
+    }
+    sendCount++
+}
+
+Return
+
+#s::
+SplashTextOn,,,Inputting send key...,
+custom := ""
+Loop
+{
+    temp := ""
+    Input,temp,L1 T0.5,{Esc}{Enter}
+    if (temp == "")
+    {
+        SplashTextOff
+        Break
+    }
+    custom .= temp
+}
+If (GetKeyState("LWin"))
+{
+    InputBox, newKey, New Send Key, Enter the key of the key-value pair:
+    if ErrorLevel <> 0  ; The user pressed Cancel.
+        return
+    InputBox, newValue, New Send Value, Enter the value of the key-value pair:
+    if ErrorLevel <> 0  ; The user pressed Cancel.
+        return
+    ; Otherwise, add the pair and reload the script:
+    temp := sendCount
+    temp++
+    IniWrite, %newKey%, %scriptName%.ini, send, key%temp%
+    IniWrite, %newValue%, %scriptName%.ini, send, value%temp%
+}
+If (custom == "")
+    Return
+SplashTextOn,,,Sending %custom%...,
+Loop % sendCount
+{
+    If (custom == sendKey%A_Index%) {
+        Send, % sendValue%A_Index%
+        GoSub, SENDDONE
+    }
+}
+SENDDONE:
+SplashTextOff
 Return
 
 ; Hotkeys mapped to Win+Space -> Combination.
-#Space::Return
+#Space::
 Suspend Off
 SplashTextOn,,,Inputting hotkey...,
 Input,custom,L1 T0.5,{Esc}{Enter}
@@ -52,40 +108,6 @@ if (custom == "mo")
 	Run, C:\Users\Moofacer\AppData\Local\Google\Chrome\Application\chrome.exe chrome-extension://nhjloagockgobfpopemejpgjjechcpfd/options.html
 if (custom == "rl")
 	Run, C:\Users\Moofacer\AppData\Local\Google\Chrome\Application\chrome.exe chrome-extension://decdfngdidijkdjgbknlnepdljfaepji/main.html
-if (custom == "za")
-	Send moofacer
-if (custom == "z1")
-	Send seriously
-if (custom == "z2")
-	Send ArsArcanum12
-if (custom == "z3")
-	Send RasutoArukanamu1728
-if (custom == "z4")
-	Send AinSophAur131072
-if (custom == "e1")
-	Send gamemoo@gmail.com
-if (custom == "e2")
-	Send kevinxie93@hotmail.com
-if (custom == "e3")
-	Send kevin.xie@berkeley.edu
-if (custom == "e4")
-	Send moofacer@hotmail.com
-if (custom == "ct") {
-; the number of the tray icon that you need to click, followed by a space and then the filename containing the icon :
-
-iconstr = 3 C:\Program Files\Winamp\Plugins\gen_delete.dll 
-
-;replace this with your filename. I used beardboys Icon Browser - http://www.autohotkey.com/forum/viewtopic.php?t=5587&highlight=iconviewer - to find the icon inside the dll
-
-   coordmode, mouse, screen
-   MouseGetPos, mouseX, mouseY
-   coordmode, pixel, screen
-   WinGetPos, trayX, trayY, trayWidth, trayHeight, ahk_class Shell_TrayWnd
-   ImageSearch, imageX, imageY, trayX, trayY, trayX+trayWidth, trayY+trayHeight, *Icon%iconstr%
-MouseMove,%imageX%,%imageY%,0    
-MouseClick,left,%imageX%,%imageY%,1,0
-   MouseMove,%mouseX%,%mouseY%,0 
-}
 if (custom == "si")
 	Send 23935362
 if (custom == "p1")
@@ -102,8 +124,6 @@ if (custom == "ri")
 	Run, C:\Users\Moofacer\Desktop\AHK\resetIP.bat
 if (custom == "nt")
 	Run, C:\Users\Moofacer\Desktop\AHK\nagle.bat
-if (custom == "re")
-	Run, C:\Users\Moofacer\Desktop\AHK\RemUMS.exe E:\
 if (custom == "cp")
 	Run, cmd.exe
 if (custom == "vm")
@@ -112,13 +132,6 @@ if (custom == "ca")
 	Run, calc.exe
 if (custom == "rd")
 	Run, mstsc.exe
-if (custom == "st")
-	Run, SnippingTool.exe
-if (custom == "vg")
-	IfExist, E:\
-	Run, E:\AppData\VGHD\VgHD\vghd.exe
-if (custom == "qv")
-	Process, Close, vghd.exe
 if (custom == "fl") {
 	clipboard =
 	Send, ^c
@@ -134,16 +147,11 @@ if (custom == "ps")
 if (custom == "mc")
 	Run, C:\Users\Moofacer\Desktop\Desktop Shortcuts\Minecraft.exe
 if (custom == "os")
+{
 	IfExist, C:\Users\Moofacer\Documents\[ASL] Yanagi Nagi - Owari no Hoshi no Love Song [MP3] [w Scans]\01 Owari no Sekai Kara.mp3
 	SoundPlay, C:\Users\Moofacer\Documents\[ASL] Yanagi Nagi - Owari no Hoshi no Love Song [MP3] [w Scans]\01 Owari no Sekai Kara.mp3
+}
 if (custom == "sm")
 	SoundPlay, Stop
-if (custom == "wp") {
-DllCall("SystemParametersInfo", UInt, 0x14, UInt, 0, Str, "C\Users\Moofacer\Desktop\Wallpapers\1Reimu.jpg", UInt, 2)
-}
-if (custom <> "") {
-SplashTextOn,,,Executed hotkey: %custom%,
-Sleep 500
-}
 SplashTextOff
 return
