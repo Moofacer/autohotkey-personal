@@ -5,6 +5,7 @@ ListLines Off
 SendMode Input
 SetWorkingDir %A_ScriptDir%  ; Ensures a consistent starting directory.
 SplitPath, A_ScriptName,,,,scriptName
+IniRead, timeLimit, %scriptName%.ini, main, timeLimit, 0.5
 mainCount := 0
 Loop
 {
@@ -40,7 +41,7 @@ Loop % mainCount
         Break
     }
 }
-SplashTextOn,,,Inputting custom key...,
+ToolTip, Executing <%deref1%>...
 custom := ""
 Loop
 {
@@ -48,39 +49,36 @@ Loop
     Input,temp,L1 T0.25,{Esc}{Enter}
     if (temp == "")
     {
-        SplashTextOff
+        ToolTip
         Break
     }
     custom .= temp
 }
+ToolTip
 If (GetKeyState("LWin"))
 {
     InputBox, newKey, New Custom Key, Enter the key of the key-value pair:
     if ErrorLevel <> 0  ; The user pressed Cancel.
         return
     InputBox, newValue, New Custom Value, Enter the value of the key-value pair:
-    if ErrorLevel <> 0  ; The user pressed Cancel.
+    if ErrorLevel <> 0
         return
-    ; Otherwise, add the pair and reload the script:
     temp := %deref1%Count
     temp++
     IniWrite, %newKey%, %scriptName%.ini, %deref1%, key%temp%
     IniWrite, %newValue%, %scriptName%.ini, %deref1%, value%temp%
-    Goto CUSTOMDONE
+    Reload
 }
 If (custom == "")
-    Goto CUSTOMDONE
-SplashTextOn,,,Executing <%deref1% %custom%>...,
+    Return
 Loop % %deref1%Count
 {
     If (custom == %deref1%Key%A_Index%) {
         Exec(deref1 . ", " . %deref1%Value%A_Index%)
         ;Send, %deref1%Value%A_Index%
-        Goto CUSTOMDONE
+        Return
     }
 }
-CUSTOMDONE:
-SplashTextOff
 Return
 
 ; OneLineCommands (Execute AHK code dynamically!)
