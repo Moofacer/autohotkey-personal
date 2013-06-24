@@ -9,6 +9,8 @@ SysGet, maxXDblClk, 36
 SysGet, maxYDblClk, 37
 maxDblClk := 5
 dblClkTime := DllCall("User32\GetDoubleClickTime")
+current := 0
+historyLimit := 10
 Return
 
 ~LButton::
@@ -48,13 +50,38 @@ If (Clipboard == "")
     Clipboard := oldClipboard
     oldClipboard := ""
     Return
-}   
-ToolTip, Copied Selection
-SetTimer, TOOLTIPCLOSE, 500
+}
+$~^c::
+$~^x::
+Loop % historyLimit - 1
+{
+    temp1 := historyLimit - A_Index
+    temp2 := temp1 + 1
+    history%temp2% := history%temp1%
+}
+history1 := Clipboardall
 oldClipboard := ""
+ToolTip, Copied Selection
+SetTimer, SELECTDONE, -500
 Return
 
-TOOLTIPCLOSE:
-SetTimer, TOOLTIPCLOSE, Off
+SELECTDONE:
 ToolTip
+Return
+
+HISTORYDONE:
+current := 0
+Return
+
+$^v::
+current++
+If (history%current% == "") {
+    current := 1
+}
+If (A_ThisHotkey == A_PriorHotkey And A_TimeSincePriorHotkey <= 1000 And history%current% != "") {
+    Send, ^z
+    SetTimer, HISTORYDONE, -1000
+}
+Clipboard := history%current%
+Send, ^v
 Return

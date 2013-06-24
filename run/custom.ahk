@@ -58,11 +58,11 @@ ToolTip
 If (GetKeyState("LWin"))
 {
     InputBox, newKey, New Custom Key, Enter the key of the key-value pair:
-    if ErrorLevel <> 0  ; The user pressed Cancel.
-        return
+    If ErrorLevel <> 0  ; The user pressed Cancel.
+        Return
     InputBox, newValue, New Custom Value, Enter the value of the key-value pair:
-    if ErrorLevel <> 0
-        return
+    If ErrorLevel <> 0
+        Return
     temp := %deref1%Count
     temp++
     IniWrite, %newKey%, %scriptName%.ini, %deref1%, key%temp%
