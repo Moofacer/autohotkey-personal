@@ -24,6 +24,7 @@ If (dist > maxDblClk)
     Goto TESTCOPY
 Return
 
+~*^LButton Up::
 ~*+LButton Up::
 ~*!LButton Up::
 ~*+Up::
