@@ -21,7 +21,7 @@ Return
 MouseGetPos, xPos, yPos
 dist := Abs(xPos - xPrev) + Abs(yPos - yPrev)
 If (dist > maxDblClk)
-    Goto TESTCOPY
+    SetTimer, TESTCOPY, -1000
 Return
 
 ~*^LButton Up::
@@ -36,12 +36,10 @@ Return
 ~*+Pgdn::
 ~*+Pgup::
 ~^a::
-SetTimer, TESTCOPY, Off
-SetTimer, TESTCOPY, 1000
+SetTimer, TESTCOPY, -1000
 Return
 
 TESTCOPY:
-SetTimer, TESTCOPY, Off
 oldClipboard := Clipboardall
 Clipboard := ""
 Send ^c
@@ -52,6 +50,18 @@ If (Clipboard == "")
     oldClipboard := ""
     Return
 }
+Loop % historyLimit - 2
+{
+    temp1 := historyLimit - A_Index
+    temp2 := temp1 + 1
+    history%temp2% := history%temp1%
+}
+history1 := Clipboardall
+history2 := oldClipboard
+ToolTip, Copied Selection
+SetTimer, SELECTDONE, -500
+Return
+
 $~^c::
 $~^x::
 Loop % historyLimit - 1
@@ -61,7 +71,6 @@ Loop % historyLimit - 1
     history%temp2% := history%temp1%
 }
 history1 := Clipboardall
-oldClipboard := ""
 ToolTip, Copied Selection
 SetTimer, SELECTDONE, -500
 Return
@@ -79,9 +88,9 @@ current++
 If (history%current% == "") {
     current := 1
 }
-If (A_ThisHotkey == A_PriorHotkey And A_TimeSincePriorHotkey <= 1000 And history%current% != "") {
+If (A_ThisHotkey == A_PriorHotkey And A_TimeSincePriorHotkey <= 2000 And history%current% != "") {
     Send, ^z
-    SetTimer, HISTORYDONE, -1000
+    SetTimer, HISTORYDONE, -2000
 }
 Clipboard := history%current%
 Send, ^v

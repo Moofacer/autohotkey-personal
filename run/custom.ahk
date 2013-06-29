@@ -9,8 +9,9 @@ IniRead, timeLimit, %scriptName%.ini, main, timeLimit, 0.5
 mainCount := 0
 Loop
 {
-    IniRead, main%A_Index%, %scriptName%.ini, main, key%A_Index%
+    IniRead, main%A_Index%, %scriptName%.ini, main, key%A_Index%, %A_Space%
     deref1 := main%A_Index%
+    MsgBox % deref1
     If (deref1 == "") {
         Break
     }
@@ -74,8 +75,7 @@ If (custom == "")
 Loop % %deref1%Count
 {
     If (custom == %deref1%Key%A_Index%) {
-        Exec(deref1 . ", " . %deref1%Value%A_Index%)
-        ;Send, %deref1%Value%A_Index%
+        ;Exec(deref1 . ", " . %deref1%Value%A_Index%)
         Return
     }
 }
