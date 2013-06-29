@@ -11,7 +11,6 @@ Loop
 {
     IniRead, main%A_Index%, %scriptName%.ini, main, key%A_Index%, %A_Space%
     deref1 := main%A_Index%
-    MsgBox % deref1
     If (deref1 == "") {
         Break
     }
@@ -47,7 +46,7 @@ custom := ""
 Loop
 {
     temp := ""
-    Input,temp,L1 T0.25,{Esc}{Enter}
+    Input,temp,L1 T%timeLimit%,{Esc}{Enter}
     if (temp == "")
     {
         ToolTip
