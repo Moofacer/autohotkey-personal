@@ -46,7 +46,7 @@ custom := ""
 Loop
 {
     temp := ""
-    Input,temp,L1 T%timeLimit%,{Esc}{Enter}
+    Input,temp,T0.5,{Esc}{Enter}
     if (temp == "")
     {
         ToolTip
@@ -57,10 +57,10 @@ Loop
 ToolTip
 If (GetKeyState("LWin"))
 {
-    InputBox, newKey, New Custom Key, Enter the key of the key-value pair:
+    InputBox, newKey, New Custom Key, Enter the key of the key-value pair:,,350,120
     If ErrorLevel <> 0  ; The user pressed Cancel.
         Return
-    InputBox, newValue, New Custom Value, Enter the value of the key-value pair:
+    InputBox, newValue, New Custom Value, Enter the value of the key-value pair:,,350,120
     If ErrorLevel <> 0
         Return
     temp := %deref1%Count
@@ -74,7 +74,7 @@ If (custom == "")
 Loop % %deref1%Count
 {
     If (custom == %deref1%Key%A_Index%) {
-        ;Exec(deref1 . ", " . %deref1%Value%A_Index%)
+        Exec(deref1 . ", " . %deref1%Value%A_Index%)
         Return
     }
 }
