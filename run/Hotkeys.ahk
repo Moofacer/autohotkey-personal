@@ -5,7 +5,7 @@
 SendMode Input  ; Recommended for new scripts due to its superior speed and reliability.
 ListLines Off
 SetWorkingDir %A_ScriptDir%  ; Ensures a consistent starting directory.
-numpadToggleState = False
+numpadToggleState = True
 Return
 
 #Delete::numpadToggleState := numpadToggleState ? False : True
