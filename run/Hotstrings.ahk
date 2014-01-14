@@ -2825,7 +2825,6 @@ return  ; This makes the above hotstrings do nothing so that they override the i
 ::journies::journeys
 ::juadaism::Judaism
 ::juadism::Judaism
-::judgment::judgement
 ::jugment::judgment
 ::judical::judicial
 ::juducial::judicial
@@ -5274,3 +5273,5 @@ return  ; This makes the above hotstrings do nothing so that they override the i
 ; Anything below this point was added to the script by the user via the Win+H hotkey.
 ;-------------------------------------------------------------------------------
 ::youre::you're
+::pokemon::pokémon
+::whats::what's

@@ -5,9 +5,10 @@
 SendMode Input  ; Recommended for new scripts due to its superior speed and reliability.
 ListLines Off
 SetWorkingDir %A_ScriptDir%  ; Ensures a consistent starting directory.
-numpadToggleState = True
+;numpadToggleState = True
 Return
 
+/*
 #Delete::numpadToggleState := numpadToggleState ? False : True
 $0::Send % numpadToggleState ? "{Numpad0}" : "0"
 $1::Send % numpadToggleState ? "{Numpad1}" : "1"
@@ -25,9 +26,9 @@ $*::Send % numpadToggleState ? "{NumpadMult}" : "*"
 $+::Send % numpadToggleState ? "{NumpadAdd}" : "+"
 $-::Send % numpadToggleState ? "{NumpadSub}" : "-"
 $Enter::Send % numpadToggleState ? "{NumpadEnter}" : "{Enter}"
+*/
 
 Capslock::Send {Enter}
-#Capslock::SetCapsLockState, % GetKeyState("CapsLock", "T")? "Off":"On"
 #LButton::MButton
 ^!w::Send {Up}
 ^!a::Send {Left}
